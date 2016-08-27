@@ -1,43 +1,54 @@
 #include <cstdio>
 #include <cstring>
 
-const size_t STR_LEN = 64;
+struct String {
+  char str[64];
+};
 
-void insertionSort(char array[][STR_LEN], size_t size) {
+bool operator > (String A, String B) {
+  if (strcmp(A.str, B.str) > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+template <typename T>
+void insertionSort (T array[], size_t size) {
   for (size_t i = 1; i < size; ++i) {
-    char key[STR_LEN];
-    strcpy(key, array[i]);
+    T key = array[i];
     int j = i - 1;
-    while (j >= 0 && strcmp(array[j], key) > 0) {
-      char temp[STR_LEN];
-      strcpy(temp, array[j]);
-      strcpy(array[j], key);
-      strcpy(array[j + 1], temp);
+    while (j >= 0 && array[j] > key) {
+      T temp = array[j];
+      array[j] = key;
+      array[j + 1] = temp;
       --j;
     }
   }
 }
 
-void printStrings(char array[][STR_LEN], size_t size) {
+void printArray(String array[], size_t size) {
   for (int i = 0; i < size; ++i) {
-    printf("%s\n", array[i]);
+    printf("%s\n", array[i].str);
   }
 }
+
 
 int main(int argc, char** argv) {
   size_t size;
   printf("Enter the size of array to sort: ");
   scanf("%i", &size);
-  char array[size][STR_LEN];
+  String array[size];
+
   printf("Enter %i strings: ", size);
   for (int i = 0; i < size; ++i) {
-    scanf("%s", array[i]);
+    scanf("%s", array[i].str);
   }
   
   insertionSort(array, size);
 
   printf("Sorted array of strings:\n");
-  printStrings(array, size);
+  printArray(array, size);
 
   return 0;
 }

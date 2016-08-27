@@ -54,29 +54,27 @@ int dequeue() {
 }
 
 int head() {
-	if (head2 <= 0) {
-		if (head1 <= 0) {
-			printf("The queue is empty!!!\n");
-		} else {
-			while (head1 > 0) {
-				push(stack2, max2, &head2, pop(stack1, &head1));
-			}
-		}
-	}
-	return top(stack2, &head2);
+  if (head2 <= 0) {
+    if (head1 <= 0) {
+      printf("The queue is empty!!!\n");
+    } else {
+      return stack1[0];
+    }
+  } else {
+    return top(stack2, &head2);
+  }
 }
 
 int tail() {
-	if (head1 <= 0) {
-		if (head2 <= 0) {
-			printf("The queue is empty!!!\n");
-		} else {
-			while (head2 > 0) {
-				push(stack1, max1, &head1, pop(stack2, &head2));
-			}
-		}
-	}
-	return top(stack1, &head1);
+  if (head1 <= 0) {
+    if (head2 <= 0) {
+      printf("The queue is empty!!!\n");
+    } else {
+      return stack2[0];
+    }
+  } else {
+    return top(stack1, &head1);
+  }  
 }
 
 void print(int stack[], int* head) {
