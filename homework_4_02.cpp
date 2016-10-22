@@ -9,6 +9,7 @@ int head1 = 0, head2 = 0;
 int top(int stack[], int* head) {
 	if (*head <= 0) {
 		printf("Stack underflow!!!\n");
+    return 0;
 	} 
 	return stack[*head - 1];
 }
@@ -22,9 +23,10 @@ void push(int stack[], int* head, int x) {
 	++*head;
 }
 
+
 int pop(int stack[], int* head) {
 	if (*head <= 0) {
-		printf("Stack underflow!!!\n");
+		printf("Stack underflow!!! ");
 		return 0;
 	}
 	return stack[(*head)-- - 1];
@@ -37,7 +39,7 @@ void enqueue(int x) {
 int dequeue() {
 	if (head2 <= 0) {
 		if (head1 <= 0) {
-			printf("The queue is empty!!!\n");
+			printf("The queue is empty!!! ");
 		} else {
 			while (head1 > 0) {
 				push(stack2, &head2, pop(stack1, &head1));
@@ -50,7 +52,8 @@ int dequeue() {
 int head() {
   if (head2 <= 0) {
     if (head1 <= 0) {
-      printf("The queue is empty!!!\n");
+      printf("The queue is empty!!! ");
+      return 0;
     } else {
       return stack1[0];
     }
@@ -62,7 +65,8 @@ int head() {
 int tail() {
   if (head1 <= 0) {
     if (head2 <= 0) {
-      printf("The queue is empty!!!\n");
+      printf("The queue is empty!!! ");
+      return 0;
     } else {
       return stack2[0];
     }
