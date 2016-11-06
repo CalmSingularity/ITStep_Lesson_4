@@ -5,19 +5,19 @@ const int SIZE = 10;
 int stack1[SIZE], stack2[SIZE];
 int head1 = 0, head2 = 0;
 
+struct StackUnderflow {};
+struct StackOverflow {};
 
 int top(int stack[], int* head) {
 	if (*head <= 0) {
-		printf("Stack underflow!!!\n");
-    return 0;
+		throw StackUnderflow();
 	} 
 	return stack[*head - 1];
 }
 
 void push(int stack[], int* head, int x) {
 	if (*head >= SIZE) {
-		printf("Stack overflow!!!\n");
-		return;
+		throw StackOverflow();
 	}
 	stack[*head] = x;
 	++*head;
@@ -26,8 +26,7 @@ void push(int stack[], int* head, int x) {
 
 int pop(int stack[], int* head) {
 	if (*head <= 0) {
-		printf("Stack underflow!!! ");
-		return 0;
+		throw StackUnderflow();
 	}
 	return stack[(*head)-- - 1];
 }
@@ -39,7 +38,7 @@ void enqueue(int x) {
 int dequeue() {
 	if (head2 <= 0) {
 		if (head1 <= 0) {
-			printf("The queue is empty!!! ");
+			throw StackUnderflow();
 		} else {
 			while (head1 > 0) {
 				push(stack2, &head2, pop(stack1, &head1));
@@ -50,29 +49,27 @@ int dequeue() {
 }
 
 int head() {
-  if (head2 <= 0) {
-    if (head1 <= 0) {
-      printf("The queue is empty!!! ");
-      return 0;
-    } else {
-      return stack1[0];
-    }
-  } else {
-    return top(stack2, &head2);
-  }
+	if (head2 <= 0) {
+		if (head1 <= 0) {
+			throw StackUnderflow();
+		} else {
+			return stack1[0];
+		}
+	} else {
+		return top(stack2, &head2);
+	}
 }
 
 int tail() {
-  if (head1 <= 0) {
-    if (head2 <= 0) {
-      printf("The queue is empty!!! ");
-      return 0;
-    } else {
-      return stack2[0];
-    }
-  } else {
-    return top(stack1, &head1);
-  }  
+	if (head1 <= 0) {
+		if (head2 <= 0) {
+			throw StackUnderflow();
+		} else {
+			return stack2[0];
+		}
+	} else {
+		return top(stack1, &head1);
+	}	
 }
 
 void print(int stack[], int* head) {
@@ -120,27 +117,54 @@ int main(int argc, char** argv) {
 		
 		switch (c) {
 			case HEAD:
-				printf("%i\n", head());
+				try {
+					printf("%i\n", head());
+				}	catch (StackUnderflow e) {
+					printf("Stack underflow!!!\n");
+				}
 				break;
+			
 			case TAIL:
-				printf("%i\n", tail());
+				try {
+					printf("%i\n", tail());
+				}	catch (StackUnderflow e) {
+					printf("Stack underflow!!!\n");
+				}
 				break;
+			
 			case ENQUEUE:
 				int value;
 				scanf("%i", &value);
-				enqueue(value);
+				try {
+					enqueue(value);
+				}	catch (StackOverflow e) {
+					printf("Stack overflow!!!\n");
+				}	
 				break;
+			
 			case DEQUEUE:
-				printf("%i\n", dequeue());
+				try {
+					printf("%i\n", dequeue());
+				}
+				catch (StackOverflow e) {
+					printf("Stack overflow!!!\n");
+				}
+				catch (StackUnderflow e) {
+					printf("Stack underflow!!!\n");
+				}
 				break;
+
 			case PRINT1:
 				print(stack1, &head1);
 				break;
+
 			case PRINT2:
 				print(stack2, &head2);
 				break;
+
 			case EXIT:
 				return 0;
+				
 			case UNKNOWN:
 			default:
 				printf("Wrong command!\n");
